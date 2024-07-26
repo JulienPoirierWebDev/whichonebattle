@@ -9,6 +9,7 @@ import {
   IonTabs,
   setupIonicReact,
 } from "@ionic/react";
+
 import { IonReactRouter } from "@ionic/react-router";
 import { home, trophySharp, person } from "ionicons/icons";
 import Tab1 from "./pages/Tab1";
@@ -44,6 +45,7 @@ import "@ionic/react/css/palettes/dark.system.css";
 
 /* Theme variables */
 import "./theme/variables.css";
+import Header from "./components/Header/Header";
 
 setupIonicReact();
 
