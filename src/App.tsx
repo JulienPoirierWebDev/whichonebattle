@@ -46,6 +46,8 @@ import "@ionic/react/css/palettes/dark.system.css";
 /* Theme variables */
 import "./theme/variables.css";
 import Header from "./components/Header/Header";
+import Connexion from "./pages/Connexion";
+import Inscription from "./pages/Inscription";
 
 setupIonicReact();
 
@@ -65,6 +67,12 @@ const App: React.FC = () => (
           </Route>
           <Route exact path="/">
             <Redirect to="/tab1" />
+          </Route>
+          <Route path="/connexion">
+            <Connexion />
+          </Route>
+          <Route path="/inscription">
+            <Inscription />
           </Route>
         </IonRouterOutlet>
         <IonTabBar slot="bottom">
