@@ -20,10 +20,12 @@
 }
 
 .barre1 {
-  width: 40%;
-  background: red;
+  --percentage: 40%;
+  --background: "red";
+  width: var(--percentage);
+  background: var(--background);
   /* "to left" / "to right" - affects initial color */
-  background: linear-gradient(to left, white 50%, red 50%) right;
+  background: linear-gradient(to left, white 50%, var(--background) 50%) right;
   animation: leftToRight 3s 1s;
 }
 
@@ -51,8 +53,10 @@
 }
 
 .barre2 {
-  width: 60%;
-  background: blue;
-  background: linear-gradient(to right, white 50%, blue 50%) left;
+  --percentage: 60%;
+  --background: "blue";
+  width: var(--percentage);
+  background: var(--background);
+  background: linear-gradient(to right, white 50%, var(--background) 50%) left;
   animation: rightToLeft 3s 1s;
 }
