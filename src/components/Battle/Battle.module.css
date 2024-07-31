@@ -1,0 +1,58 @@
+.battleBarre {
+  display: flex;
+  width: 100%;
+}
+
+.battleBarre div {
+  background-size: 200%;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-in-out;
+  color: transparent;
+  position: relative;
+  height: 50px;
+}
+
+.battleBarre p {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateY(-50%) translateX(-50%);
+}
+
+.barre1 {
+  width: 40%;
+  background: red;
+  /* "to left" / "to right" - affects initial color */
+  background: linear-gradient(to left, white 50%, red 50%) right;
+  animation: leftToRight 3s 1s;
+}
+
+@keyframes leftToRight {
+  90% {
+    color: transparent;
+    background-position: left;
+  }
+
+  100% {
+    color: black;
+    background-position: left;
+  }
+}
+
+@keyframes rightToLeft {
+  90% {
+    color: transparent;
+    background-position: right;
+  }
+  100% {
+    color: black;
+    background-position: right;
+  }
+}
+
+.barre2 {
+  width: 60%;
+  background: blue;
+  background: linear-gradient(to right, white 50%, blue 50%) left;
+  animation: rightToLeft 3s 1s;
+}
