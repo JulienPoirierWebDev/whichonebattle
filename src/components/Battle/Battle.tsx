@@ -1,4 +1,5 @@
 import {
+  IonButton,
   IonCard,
   IonCardContent,
   IonCardHeader,
@@ -9,7 +10,14 @@ import {
 import classes from "./Battle.module.css";
 import { BattleProps } from "../../types/battleTypesAndInterfaces";
 
-const Battle: React.FC<BattleProps> = ({ question, texte, propositions }) => {
+const Battle: React.FC<BattleProps> = ({
+  question,
+  texte,
+  propositions,
+  buttons,
+  handleButton1,
+  handleButton2,
+}) => {
   const percentageCSSVariable1 = {
     "--percentage": `${propositions[0].percentage}%`,
     "--background": `${propositions[0].color}`,
@@ -27,6 +35,32 @@ const Battle: React.FC<BattleProps> = ({ question, texte, propositions }) => {
         <IonCardSubtitle>{texte}</IonCardSubtitle>
       </IonCardHeader>
       <IonCardContent>
+        {buttons && (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-around",
+              marginBottom: "20px",
+            }}
+          >
+            <IonButton
+              fill="solid"
+              size="large"
+              color="dark"
+              onClick={handleButton1}
+            >
+              {propositions[0].name}
+            </IonButton>
+            <IonButton
+              fill="solid"
+              size="large"
+              color="dark"
+              onClick={handleButton2}
+            >
+              {propositions[1].name}
+            </IonButton>
+          </div>
+        )}
         <div className={classes.battleBarre}>
           <div className={classes.barre1} style={percentageCSSVariable1}>
             <p>{propositions[0].percentage}%</p>
@@ -35,6 +69,7 @@ const Battle: React.FC<BattleProps> = ({ question, texte, propositions }) => {
             <p>{propositions[1].percentage}%</p>
           </div>
         </div>
+
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           <p>{propositions[0].name}</p>
           <p>{propositions[1].name}</p>

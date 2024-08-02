@@ -7,4 +7,7 @@ export interface BattleProps {
   question: string;
   texte: string;
   propositions: propositionsType;
+  buttons?: boolean;
+  handleButton1?: () => void;
+  handleButton2?: () => void;
 }
