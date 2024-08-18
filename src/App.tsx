@@ -46,52 +46,52 @@ import "@ionic/react/css/palettes/dark.system.css";
 /* Theme variables */
 import "./theme/variables.css";
 import Header from "./components/Header/Header";
-import Connexion from "./pages/Connexion";
-import Inscription from "./pages/Inscription";
+import Connexion from "./components/Connexion";
+import Inscription from "./components/Inscription";
+import { getCookies, getOneCookie } from "./utils/capacitor/cookies";
+import AuthContextProvider from "./context/AuthContextProvider";
 
 setupIonicReact();
 
-const App: React.FC = () => (
-  <IonApp>
-    <IonReactRouter>
-      <IonTabs>
-        <IonRouterOutlet>
-          <Route exact path="/tab1">
-            <Tab1 />
-          </Route>
-          <Route exact path="/tab2">
-            <Tab2 />
-          </Route>
-          <Route path="/tab3">
-            <Tab3 />
-          </Route>
-          <Route exact path="/">
-            <Redirect to="/tab1" />
-          </Route>
-          <Route path="/connexion">
-            <Connexion />
-          </Route>
-          <Route path="/inscription">
-            <Inscription />
-          </Route>
-        </IonRouterOutlet>
-        <IonTabBar slot="bottom">
-          <IonTabButton tab="tab1" href="/tab1">
-            <IonIcon icon={home} aria-hidden="true" />
-            <IonLabel>Accueil</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="tab2" href="/tab2">
-            <IonIcon aria-hidden="true" icon={trophySharp} />
-            <IonLabel>Toutes les Battles</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="tab3" href="/tab3">
-            <IonIcon aria-hidden="true" icon={person} />
-            <IonLabel>Mon profil</IonLabel>
-          </IonTabButton>
-        </IonTabBar>
-      </IonTabs>
-    </IonReactRouter>
-  </IonApp>
-);
+const App: React.FC = () => {
+  return (
+    <IonApp>
+      <AuthContextProvider>
+        <IonReactRouter>
+          <IonTabs>
+            <IonRouterOutlet>
+              <Route exact path="/tab1">
+                <Tab1 />
+              </Route>
+              <Route exact path="/tab2">
+                <Tab2 />
+              </Route>
+              <Route path="/tab3">
+                <Tab3 />
+              </Route>
+              <Route exact path="/">
+                <Redirect to="/tab1" />
+              </Route>
+            </IonRouterOutlet>
+            <IonTabBar slot="bottom">
+              <IonTabButton tab="tab1" href="/tab1">
+                <IonIcon icon={home} aria-hidden="true" />
+                <IonLabel>Accueil</IonLabel>
+              </IonTabButton>
+              <IonTabButton tab="tab2" href="/tab2">
+                <IonIcon aria-hidden="true" icon={trophySharp} />
+                <IonLabel>Toutes les Battles</IonLabel>
+              </IonTabButton>
+              <IonTabButton tab="tab3" href="/tab3">
+                <IonIcon aria-hidden="true" icon={person} />
+                <IonLabel>Mon profil</IonLabel>
+              </IonTabButton>
+            </IonTabBar>
+          </IonTabs>
+        </IonReactRouter>
+      </AuthContextProvider>
+    </IonApp>
+  );
+};
 
 export default App;

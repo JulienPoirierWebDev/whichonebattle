@@ -30,8 +30,29 @@ const BattleWrapper: React.FC<BattleWrapperProps> = ({
   };
 
   const isButtons = () => {
+    if (!buttons) {
+      return false;
+    }
     return choice === null;
   };
+
+  const totalVote = propositions[0].value + propositions[1].value;
+
+  const isVote = totalVote !== 0;
+
+  const percentagePropositionIndex0 = (propositions[0].value / totalVote) * 100;
+  const percentagePropositionIndex1 = (propositions[1].value / totalVote) * 100;
+
+  const newPropositions = [
+    {
+      ...propositions[0],
+      percentage: percentagePropositionIndex0,
+    },
+    {
+      ...propositions[1],
+      percentage: percentagePropositionIndex1,
+    },
+  ];
   return (
     <>
       <Battle
@@ -41,6 +62,7 @@ const BattleWrapper: React.FC<BattleWrapperProps> = ({
         handleButton1={handleButton1}
         handleButton2={handleButton2}
         buttons={isButtons()}
+        isVote={isVote}
       />
     </>
   );

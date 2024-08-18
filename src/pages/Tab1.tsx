@@ -1,36 +1,19 @@
 import { IonCol, IonContent, IonGrid, IonPage, IonRow } from "@ionic/react";
-import ExploreContainer from "../components/ExploreContainer";
 import "./Tab1.css";
 import Header from "../components/Header/Header";
-import { useState } from "react";
-import fakeBattles from "../utils/fakeBattles";
+import { useEffect, useState } from "react";
 import BattleWrapper from "../components/BattleWrapper/BattleWrapper";
+import { BattleProps } from "../types/battleTypesAndInterfaces";
+import { getOneCookie } from "../utils/capacitor/cookies";
+import { useHistory, useLocation } from "react-router";
+import NewBattles from "../components/NewsBattles/NewBattles";
 
 const Tab1: React.FC = () => {
-  const [battles, setBattles] = useState(fakeBattles);
-
   return (
     <IonPage>
       <Header />
       <IonContent>
-        <IonGrid>
-          {battles.map((oneBattle) => {
-            return (
-              <IonRow
-                key={oneBattle.question}
-                class="ion-justify-content-center"
-              >
-                <IonCol sizeMd="7">
-                  <BattleWrapper
-                    key={oneBattle.question}
-                    setBattles={setBattles}
-                    {...oneBattle}
-                  />
-                </IonCol>
-              </IonRow>
-            );
-          })}
-        </IonGrid>
+        <NewBattles />
       </IonContent>
     </IonPage>
   );

@@ -1,6 +1,6 @@
 export type propositionsType = [
-  { name: string; percentage: number; color?: string },
-  { name: string; percentage: number; color?: string }
+  { name: string; percentage: number; color?: string; value: number },
+  { name: string; percentage: number; color?: string; value: number }
 ];
 
 export interface BattleProps {
@@ -10,4 +10,5 @@ export interface BattleProps {
   buttons?: boolean;
   handleButton1?: () => void;
   handleButton2?: () => void;
+  isVote: boolean;
 }

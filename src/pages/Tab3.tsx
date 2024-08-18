@@ -1,36 +1,39 @@
-import {
-  IonContent,
-  IonGrid,
-  IonPage,
-  IonTitle,
-  IonRow,
-  IonCol,
-  IonInput,
-  IonButton,
-} from "@ionic/react";
-import ExploreContainer from "../components/ExploreContainer";
+import { IonContent, IonPage, IonTitle, IonButton } from "@ionic/react";
 import "./Tab3.css";
 import Header from "../components/Header/Header";
-import { FormEventHandler, useEffect } from "react";
-import { useHistory } from "react-router-dom";
+
+import useAuthContext from "../hooks/useAuthContext";
+import Connexion from "../components/Connexion";
+import Inscription from "../components/Inscription";
+import { useState } from "react";
 
 const Tab3: React.FC = () => {
-  const profil = null;
-
-  const history = useHistory();
-
-  useEffect(() => {
-    if (!profil) history.push("/connexion");
-  }, [history, profil]);
-
-  if (!profil) return null;
+  const { isAuth, loading, removeCookie } = useAuthContext();
+  const [inscription, setInscription] = useState<boolean>(false);
 
   return (
     <IonPage>
       <Header />
       <IonContent>
         <IonTitle>
-          <h1 className="ion-text-center">Profil</h1>
+          {isAuth && (
+            <>
+              <h1 className="ion-text-center">Profil</h1>
+              <IonButton
+                onClick={async () => {
+                  removeCookie();
+                }}
+              >
+                Se deconnecter
+              </IonButton>
+            </>
+          )}
+          {!isAuth && !inscription && (
+            <Connexion setInscription={setInscription} />
+          )}
+          {!isAuth && inscription && (
+            <Inscription setInscription={setInscription} />
+          )}
         </IonTitle>
       </IonContent>
     </IonPage>

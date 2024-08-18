@@ -17,6 +17,7 @@ const Battle: React.FC<BattleProps> = ({
   buttons,
   handleButton1,
   handleButton2,
+  isVote,
 }) => {
   const percentageCSSVariable1 = {
     "--percentage": `${propositions[0].percentage}%`,
@@ -61,19 +62,22 @@ const Battle: React.FC<BattleProps> = ({
             </IonButton>
           </div>
         )}
-        <div className={classes.battleBarre}>
-          <div className={classes.barre1} style={percentageCSSVariable1}>
-            <p>{propositions[0].percentage}%</p>
-          </div>
-          <div className={classes.barre2} style={percentageCSSVariable2}>
-            <p>{propositions[1].percentage}%</p>
-          </div>
-        </div>
-
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <p>{propositions[0].name}</p>
-          <p>{propositions[1].name}</p>
-        </div>
+        {isVote && (
+          <>
+            <div className={classes.battleBarre}>
+              <div className={classes.barre1} style={percentageCSSVariable1}>
+                <p>{propositions[0].percentage}%</p>
+              </div>
+              <div className={classes.barre2} style={percentageCSSVariable2}>
+                <p>{propositions[1].percentage}%</p>
+              </div>
+            </div>{" "}
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <p>{propositions[0].name}</p>
+              <p>{propositions[1].name}</p>
+            </div>
+          </>
+        )}
       </IonCardContent>
     </IonCard>
   );
