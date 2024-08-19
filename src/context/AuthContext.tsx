@@ -5,6 +5,7 @@ type AuthContextType = {
   loading: boolean;
   removeCookie: () => void;
   setToken?: (token: string) => void;
+  token?: string;
 };
 
 const defaultAuthContext: AuthContextType = {
@@ -12,6 +13,7 @@ const defaultAuthContext: AuthContextType = {
   setToken: () => {},
   loading: true,
   removeCookie: () => {},
+  token: undefined,
 };
 
 const AuthContext = createContext<AuthContextType>(defaultAuthContext);

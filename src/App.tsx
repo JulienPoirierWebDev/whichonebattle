@@ -1,6 +1,7 @@
 import { Redirect, Route } from "react-router-dom";
 import {
   IonApp,
+  IonButton,
   IonIcon,
   IonLabel,
   IonRouterOutlet,
@@ -11,7 +12,7 @@ import {
 } from "@ionic/react";
 
 import { IonReactRouter } from "@ionic/react-router";
-import { home, trophySharp, person } from "ionicons/icons";
+import { home, trophySharp, person, addCircleOutline } from "ionicons/icons";
 import Tab1 from "./pages/Tab1";
 import Tab2 from "./pages/Tab2";
 import Tab3 from "./pages/Tab3";
@@ -86,6 +87,10 @@ const App: React.FC = () => {
                 <IonIcon aria-hidden="true" icon={person} />
                 <IonLabel>Mon profil</IonLabel>
               </IonTabButton>
+              {/*<IonTabButton tab="tab4" href="/tab4">
+                <IonIcon aria-hidden="true" icon={addCircleOutline} />
+                <IonLabel>Nouveau Battle</IonLabel>
+              </IonTabButton>*/}
             </IonTabBar>
           </IonTabs>
         </IonReactRouter>

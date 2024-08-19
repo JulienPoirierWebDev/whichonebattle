@@ -22,6 +22,7 @@ const AuthContextProvider: React.FC<Props> = ({ children }) => {
     loading,
     removeCookie,
     setToken,
+    token,
   };
   useEffect(() => {
     if (token !== undefined) {

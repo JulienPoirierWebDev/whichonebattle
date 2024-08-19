@@ -44,20 +44,10 @@ const Battle: React.FC<BattleProps> = ({
               marginBottom: "20px",
             }}
           >
-            <IonButton
-              fill="solid"
-              size="large"
-              color="dark"
-              onClick={handleButton1}
-            >
+            <IonButton fill="solid" color="dark" onClick={handleButton1}>
               {propositions[0].name}
             </IonButton>
-            <IonButton
-              fill="solid"
-              size="large"
-              color="dark"
-              onClick={handleButton2}
-            >
+            <IonButton fill="solid" color="dark" onClick={handleButton2}>
               {propositions[1].name}
             </IonButton>
           </div>
@@ -65,12 +55,16 @@ const Battle: React.FC<BattleProps> = ({
         {isVote && (
           <>
             <div className={classes.battleBarre}>
-              <div className={classes.barre1} style={percentageCSSVariable1}>
-                <p>{propositions[0].percentage}%</p>
-              </div>
-              <div className={classes.barre2} style={percentageCSSVariable2}>
-                <p>{propositions[1].percentage}%</p>
-              </div>
+              {propositions[0].percentage !== 0 ? (
+                <div className={classes.barre1} style={percentageCSSVariable1}>
+                  <p>{propositions[0].percentage}%</p>
+                </div>
+              ) : null}
+              {propositions[1].percentage !== 0 ? (
+                <div className={classes.barre2} style={percentageCSSVariable2}>
+                  <p>{propositions[1].percentage}%</p>
+                </div>
+              ) : null}
             </div>{" "}
             <div style={{ display: "flex", justifyContent: "space-between" }}>
               <p>{propositions[0].name}</p>

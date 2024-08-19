@@ -11,4 +11,6 @@ export interface BattleProps {
   handleButton1?: () => void;
   handleButton2?: () => void;
   isVote: boolean;
+  _id: string;
+  createdAt?: string;
 }
