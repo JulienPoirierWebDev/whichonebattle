@@ -46,9 +46,9 @@ const NewBattles = () => {
     setBattles(
       [...updatedBattles, ...notUpdatedBattles].sort((a, b) => {
         if (b._id < a._id) {
-          return 1;
+          return -1;
         }
-        return -1;
+        return 1;
       })
     );
   };
@@ -57,7 +57,7 @@ const NewBattles = () => {
     console.log("Tab1.tsx: useEffect: location.pathname: ", location.pathname);
     const getFiveBattles = async () => {
       const request = await fetch(
-        "https://api.which-one-battle.julienpoirier-webdev.com/api/battles?limit=5"
+        "https://api.which-one-battle.julienpoirier-webdev.com/api/battles?limit=15"
       );
       const response = await request.json();
 
@@ -87,10 +87,7 @@ const NewBattles = () => {
           })
           .map((oneBattle) => {
             return (
-              <IonRow
-                key={oneBattle.question}
-                class="ion-justify-content-center"
-              >
+              <IonRow key={oneBattle._id} class="ion-justify-content-center">
                 <IonCol sizeMd="7">
                   <BattleWrapper
                     key={oneBattle.question}

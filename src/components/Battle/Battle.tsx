@@ -57,12 +57,12 @@ const Battle: React.FC<BattleProps> = ({
             <div className={classes.battleBarre}>
               {propositions[0].percentage !== 0 ? (
                 <div className={classes.barre1} style={percentageCSSVariable1}>
-                  <p>{propositions[0].percentage}%</p>
+                  <p>{Math.round(propositions[0].percentage)}%</p>
                 </div>
               ) : null}
               {propositions[1].percentage !== 0 ? (
                 <div className={classes.barre2} style={percentageCSSVariable2}>
-                  <p>{propositions[1].percentage}%</p>
+                  <p>{Math.round(propositions[1].percentage)}%</p>
                 </div>
               ) : null}
             </div>{" "}
