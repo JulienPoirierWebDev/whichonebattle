@@ -17,13 +17,19 @@ interface BattleWrapperProps {
   setBattles: React.Dispatch<React.SetStateAction<BattleProps[]>>;
   _id: string;
   updateBattles: (idToUpdate: string, propositionVoted: string) => void;
-}
+  userVote?: {
+    name: string;
+    battle_id: string;
+    user_id: string;
+    
+  }}
 
 const BattleWrapper: React.FC<BattleWrapperProps> = ({
   question,
   texte,
   propositions,
   buttons,
+  userVote,
   _id,
   updateBattles,
 }) => {
@@ -33,6 +39,8 @@ const BattleWrapper: React.FC<BattleWrapperProps> = ({
   const { token } = useAuthContext();
   const handleButton1 = async (name: string) => {
     setChoice(name);
+
+    
 
     const response = await fetch(
       `https://api.which-one-battle.julienpoirier-webdev.com/api/battles/${_id}/vote`,
@@ -116,6 +124,7 @@ const BattleWrapper: React.FC<BattleWrapperProps> = ({
         buttons={isButtons()}
         isVote={isVote}
         _id={_id}
+        userVote={userVote}
       />
       <IonToast
         duration={5000}

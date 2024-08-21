@@ -144,7 +144,7 @@ const Tab1: React.FC = () => {
             </IonCol>
           </IonRow>
         </IonGrid>
-        {showNewBattles && <NewBattles key={showNewBattles} />}
+         {showNewBattles && <NewBattles key={showNewBattles}   limit={2} infinite/>}
       </IonContent>
     </IonPage>
   );
