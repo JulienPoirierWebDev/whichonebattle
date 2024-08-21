@@ -13,4 +13,10 @@ export interface BattleProps {
   isVote: boolean;
   _id: string;
   createdAt?: string;
+  userVote?: {
+    name: string;
+    battle_id: string;
+    user_id: string;
+    
+  }
 }

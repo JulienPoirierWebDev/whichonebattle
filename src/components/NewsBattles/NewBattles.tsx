@@ -1,19 +1,62 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   BattleProps,
   propositionsType,
 } from "../../types/battleTypesAndInterfaces";
 import { getOneCookie } from "../../utils/capacitor/cookies";
 import { useLocation } from "react-router";
-import { IonCol, IonGrid, IonRow } from "@ionic/react";
+import { IonCol, IonGrid, IonInfiniteScroll, IonInfiniteScrollContent, IonRow } from "@ionic/react";
 import BattleWrapper from "../BattleWrapper/BattleWrapper";
 import useAuthContext from "../../hooks/useAuthContext";
 
-const NewBattles = () => {
+
+interface NewBattlesProps {
+  infinite?: boolean;
+  limit?: number;
+}
+
+const NewBattles : React.FC<NewBattlesProps> = ({infinite=false, limit=5}) => {
   const [battles, setBattles] = useState<BattleProps[]>([]);
+  const [actualPage, setActualPage] = useState<number>(0);
+  const [isMoreBattles, setIsMoreBattles] = useState<boolean>(true);
   const { isAuth } = useAuthContext();
 
-  const location = useLocation();
+  const getFiveBattles = useCallback(async (page:number = 0) => {
+
+    const options = getOneCookie("token") ? {
+      headers: {
+        Authorization: `Bearer ${getOneCookie("token")}`,
+      },
+    } : {};
+    const request = await fetch(
+      `https://api.which-one-battle.julienpoirier-webdev.com/api/battles?limit=${limit}&page=${page}`
+    , 
+   options
+        );
+    const response = await request.json();
+
+
+
+
+      setBattles((prev) => {
+        const newBattles = response.filter((newBattle : BattleProps) => {
+          const isOldBattle = prev.find(
+            (oldBattle) => oldBattle._id === newBattle._id
+          );
+          if (isOldBattle) {
+            return false;
+          }
+          return true;
+        }
+        );
+
+        return [...prev, ...newBattles];
+      });
+
+      return response;
+    
+  }, []); 
+
   const updateBattles = (idToUpdate: string, propositionVoted: string) => {
     const updatedBattles = battles.filter((battle) => {
       if (battle._id === idToUpdate) {
@@ -51,27 +94,17 @@ const NewBattles = () => {
         return -1;
       })
     );
+    
   };
 
   useEffect(() => {
-    console.log("Tab1.tsx: useEffect: location.pathname: ", location.pathname);
-    const getFiveBattles = async () => {
-      const request = await fetch(
-        "https://api.which-one-battle.julienpoirier-webdev.com/api/battles?limit=5"
-      );
-      const response = await request.json();
 
-      setTimeout(() => {
-        setBattles((prev) => []);
-        setBattles((prev) => [...prev, ...response]);
-      }, 2000);
-    };
 
     getFiveBattles();
   }, []);
 
   return (
-    <IonGrid>
+    <><IonGrid>
       {battles.length > 0 ? (
         battles
           .sort((a, b) => {
@@ -88,7 +121,7 @@ const NewBattles = () => {
           .map((oneBattle) => {
             return (
               <IonRow
-                key={oneBattle.question}
+                key={oneBattle._id}
                 class="ion-justify-content-center"
               >
                 <IonCol sizeMd="7">
@@ -110,6 +143,19 @@ const NewBattles = () => {
         </IonGrid>
       )}
     </IonGrid>
+    <IonInfiniteScroll disabled={!infinite || !isMoreBattles}  onIonInfinite={async (ev) => {
+      console.log("load more battles");
+      setActualPage((prev) => prev + 1);
+      const newBattles = await getFiveBattles(actualPage + 1);
+      if(newBattles.length === 0) {
+        setIsMoreBattles(false);
+      }
+      ev.target.complete();
+    }}>
+      <IonInfiniteScrollContent loadingText="Loading more battles ..." > </IonInfiniteScrollContent>
+
+    </IonInfiniteScroll>
+    </>
   );
 };
 

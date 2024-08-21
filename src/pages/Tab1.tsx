@@ -108,7 +108,7 @@ const Tab1: React.FC = () => {
             </IonCol>
           </IonRow>
         </IonGrid>
-        <NewBattles />
+        <NewBattles limit={2} infinite/>
       </IonContent>
     </IonPage>
   );

@@ -18,6 +18,7 @@ const Battle: React.FC<BattleProps> = ({
   handleButton1,
   handleButton2,
   isVote,
+  userVote,
 }) => {
   const percentageCSSVariable1 = {
     "--percentage": `${propositions[0].percentage}%`,
@@ -34,9 +35,13 @@ const Battle: React.FC<BattleProps> = ({
       <IonCardHeader>
         <IonCardTitle>{question}</IonCardTitle>
         <IonCardSubtitle>{texte}</IonCardSubtitle>
+        {userVote && userVote.name  && (
+          <h3>Vous avez déja voté pour {userVote.name}</h3>
+        )}
       </IonCardHeader>
       <IonCardContent>
-        {buttons && (
+        
+        {!userVote && buttons && (
           <div
             style={{
               display: "flex",
