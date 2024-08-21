@@ -89,9 +89,9 @@ const NewBattles : React.FC<NewBattlesProps> = ({infinite=false, limit=5}) => {
     setBattles(
       [...updatedBattles, ...notUpdatedBattles].sort((a, b) => {
         if (b._id < a._id) {
-          return 1;
+          return -1;
         }
-        return -1;
+        return 1;
       })
     );
     
@@ -124,6 +124,7 @@ const NewBattles : React.FC<NewBattlesProps> = ({infinite=false, limit=5}) => {
                 key={oneBattle._id}
                 class="ion-justify-content-center"
               >
+
                 <IonCol sizeMd="7">
                   <BattleWrapper
                     key={oneBattle.question}

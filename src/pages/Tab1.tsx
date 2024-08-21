@@ -21,9 +21,45 @@ import NewBattles from "../components/NewsBattles/NewBattles";
 import { closeCircleOutline, closeOutline } from "ionicons/icons";
 const Tab1: React.FC = () => {
   const [newBattlePanel, setNewBattlePanel] = useState<boolean>(false);
+  const [showNewBattles, setShowNewBattles] = useState<number>(1);
   useIonViewWillEnter(() => {
     setNewBattlePanel(false);
   });
+
+  const handleCreateBattle = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log("create battle");
+
+    const data = new FormData(e.currentTarget);
+
+    const question = data.get("question");
+    const texte = data.get("texte");
+    const proposition1 = data.get("proposition1");
+    const proposition2 = data.get("proposition2");
+
+    const token = getOneCookie("token");
+
+    const response = await fetch(
+      "https://api.which-one-battle.julienpoirier-webdev.com/api/battles",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          question,
+          texte,
+          propositions: [{ name: proposition1 }, { name: proposition2 }],
+        }),
+      }
+    );
+
+    const responseData = await response.json();
+
+    console.log(responseData);
+    setShowNewBattles(showNewBattles + 1);
+  };
   return (
     <IonPage>
       <Header />
@@ -56,7 +92,7 @@ const Tab1: React.FC = () => {
             <IonCol sizeMd="7">
               <h2>Créer un nouveau battle</h2>{" "}
               <IonButton
-                style={{ position: "absolute", right: "0", top: "0" }}
+                style={{ position: "absolute", right: "0", top: "10px" }}
                 color={"warning"}
                 shape="round"
                 onClick={() => setNewBattlePanel(false)}
@@ -69,7 +105,7 @@ const Tab1: React.FC = () => {
           {/*create form*/}
           <IonRow class="ion-justify-content-center">
             <IonCol sizeMd="7">
-              <form id="addBattleForm">
+              <form id="addBattleForm" onSubmit={handleCreateBattle}>
                 <IonInput
                   placeholder="Chat ou Chien ?"
                   labelPlacement="stacked"
@@ -108,7 +144,7 @@ const Tab1: React.FC = () => {
             </IonCol>
           </IonRow>
         </IonGrid>
-        <NewBattles limit={2} infinite/>
+         {showNewBattles && <NewBattles key={showNewBattles}   limit={2} infinite/>}
       </IonContent>
     </IonPage>
   );
