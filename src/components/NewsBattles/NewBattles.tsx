@@ -13,15 +13,16 @@ import useAuthContext from "../../hooks/useAuthContext";
 interface NewBattlesProps {
   infinite?: boolean;
   limit?: number;
+  unvoted?: boolean;
 }
 
-const NewBattles : React.FC<NewBattlesProps> = ({infinite=false, limit=5}) => {
+const NewBattles : React.FC<NewBattlesProps> = ({infinite=false, limit=5, unvoted=false}) => {
   const [battles, setBattles] = useState<BattleProps[]>([]);
   const [actualPage, setActualPage] = useState<number>(0);
   const [isMoreBattles, setIsMoreBattles] = useState<boolean>(true);
   const { isAuth } = useAuthContext();
 
-  const getFiveBattles = useCallback(async (page:number = 0) => {
+  const getBattles = useCallback(async (page:number = 0) => {
 
     const options = getOneCookie("token") ? {
       headers: {
@@ -29,14 +30,11 @@ const NewBattles : React.FC<NewBattlesProps> = ({infinite=false, limit=5}) => {
       },
     } : {};
     const request = await fetch(
-      `https://api.which-one-battle.julienpoirier-webdev.com/api/battles?limit=${limit}&page=${page}`
+      `https://api.which-one-battle.julienpoirier-webdev.com/api/battles?limit=${limit}&page=${page}${unvoted ? "&unvoted=true" : ""}`
     , 
    options
         );
     const response = await request.json();
-
-
-
 
       setBattles((prev) => {
         const newBattles = response.filter((newBattle : BattleProps) => {
@@ -53,58 +51,45 @@ const NewBattles : React.FC<NewBattlesProps> = ({infinite=false, limit=5}) => {
         return [...prev, ...newBattles];
       });
 
-      return response;
+    return response;
     
   }, []); 
 
   const updateBattles = (idToUpdate: string, propositionVoted: string) => {
-    const updatedBattles = battles.filter((battle) => {
+    const updatedBattles = battles.map((battle) => {
       if (battle._id === idToUpdate) {
-        return false;
+        const indexOfProposition = battle.propositions.findIndex(
+          (proposition) => proposition.name === propositionVoted
+        );
+  
+        return {
+          ...battle,
+          propositions: battle.propositions.map((proposition, index) => {
+            if (index === indexOfProposition) {
+              return { ...proposition, value: proposition.value + 1 };
+            }
+            return proposition;
+          }) as propositionsType,
+          userVote: { name: propositionVoted, battle_id: idToUpdate, user_id: "" },
+        };
       }
-      return true;
+  
+      return battle;
     });
-
-    const indexOfProposition = updatedBattles[0].propositions.findIndex(
-      (proposition) => proposition.name === propositionVoted
-    );
-
-    updatedBattles[0] = {
-      ...updatedBattles[0],
-      propositions: updatedBattles[0].propositions.map((proposition, index) => {
-        if (index === indexOfProposition) {
-          return { ...proposition, value: proposition.value + 1 };
-        }
-        return proposition;
-      }) as propositionsType,
-    };
-
-    const notUpdatedBattles = battles.filter((battle) => {
-      if (battle._id === idToUpdate) {
-        return true;
-      }
-      return false;
-    });
-
-    setBattles(
-      [...updatedBattles, ...notUpdatedBattles].sort((a, b) => {
-        if (b._id < a._id) {
-          return -1;
-        }
-        return 1;
-      })
-    );
-    
+  
+    setBattles(updatedBattles);
   };
+  
 
   useEffect(() => {
 
 
-    getFiveBattles();
+    getBattles();
   }, []);
 
   return (
-    <><IonGrid>
+    <>
+    <IonGrid>
       {battles.length > 0 ? (
         battles
           .sort((a, b) => {
@@ -147,7 +132,7 @@ const NewBattles : React.FC<NewBattlesProps> = ({infinite=false, limit=5}) => {
     <IonInfiniteScroll disabled={!infinite || !isMoreBattles}  onIonInfinite={async (ev) => {
       console.log("load more battles");
       setActualPage((prev) => prev + 1);
-      const newBattles = await getFiveBattles(actualPage + 1);
+      const newBattles = await getBattles(actualPage + 1);
       if(newBattles.length === 0) {
         setIsMoreBattles(false);
       }

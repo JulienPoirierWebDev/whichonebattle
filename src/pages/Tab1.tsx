@@ -38,6 +38,7 @@ const Tab1: React.FC = () => {
     const proposition2 = data.get("proposition2");
 
     const token = getOneCookie("token");
+    console.log(token);
 
     const response = await fetch(
       "https://api.which-one-battle.julienpoirier-webdev.com/api/battles",
@@ -144,7 +145,7 @@ const Tab1: React.FC = () => {
             </IonCol>
           </IonRow>
         </IonGrid>
-         {showNewBattles && <NewBattles key={showNewBattles}   limit={2} infinite/>}
+         {showNewBattles && <NewBattles key={showNewBattles}   limit={10} />}
       </IonContent>
     </IonPage>
   );
